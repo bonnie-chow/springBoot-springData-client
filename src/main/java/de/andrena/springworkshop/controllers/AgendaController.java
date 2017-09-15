@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AgendaController {
 
+    private final EventFacade eventFacade;
+
     @Autowired
-    private EventFacade eventFacade;
+    public AgendaController(EventFacade eventFacade) {
+        this.eventFacade = eventFacade;
+    }
 
     @RequestMapping( value = "/agenda")
     public String agenda(final Model model)
