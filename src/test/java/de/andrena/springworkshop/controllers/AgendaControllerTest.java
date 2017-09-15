@@ -6,7 +6,6 @@ import de.andrena.springworkshop.facades.EventFacade;
 import de.andrena.springworkshop.facades.EventFacadeImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -29,7 +28,10 @@ public class AgendaControllerTest {
 
     private static final String SEARCH_TERM = "myTestTitle";
 
-    // was macht das hier? Warum brauchen wir das
+    // @TestConfiguration is used to customise the Spring test context here
+    // Modifies the current context
+    // Spring caches the test contexts between tests -> no need to reload context (saves time)
+    // as long as the tests share the same context
     @TestConfiguration
     static class EventFacadeTestConfiguration {
 
@@ -39,11 +41,12 @@ public class AgendaControllerTest {
         }
     }
 
-    // difference between @Mock, @MockBean ... explain
+    // @MockBean is a Spring Boot annotation - adds mocks to a Spring ApplicationContext
+    // Different to @Mock from Mockito, which doesn't have anything to do with Spring Boot
     @MockBean
     private EventDao eventDao;
 
-    // what is MockMvc - link?
+    // MockMVC mocks all the Spring MVC infrastructure
     @Autowired
     private MockMvc mockMvc;
 
@@ -57,6 +60,7 @@ public class AgendaControllerTest {
                 .andExpect(model().attribute("events", eventList));
     }
 
+    //Übung wenn Zeit
     @Test
     public void search_modelContainsCorrectEvents() throws Exception {
         EventDTO eventWithTitle = new EventDTO();
